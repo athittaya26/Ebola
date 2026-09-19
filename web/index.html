@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+    <title>Ebola Disease Analytics Dashboard</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <!-- D3.js -->
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+
+    <!-- HERO -->
+
+    <header class="hero">
+
+        <div class="hero-overlay">
+
+            <h1>Ebola Disease Analytics Dashboard</h1>
+
+            <p>
+                การวิเคราะห์ข้อมูลผู้ป่วยโรคอีโบลาด้วย
+                Machine Learning และ Interactive Data Visualization
+            </p>
+
+        </div>
+
+    </header>
+
+    <!-- ABOUT -->
+
+    <section class="section">
+
+        <h2>โรคอีโบลาคืออะไร</h2>
+
+        <div class="card">
+
+            <p>
+                โรคติดเชื้อไวรัสอีโบลา (Ebola Virus Disease)
+                เป็นโรคติดเชื้อรุนแรงที่แพร่กระจายผ่านเลือด
+                สารคัดหลั่ง และของเหลวในร่างกายของผู้ติดเชื้อ
+                โรคนี้มีอัตราการเสียชีวิตสูงหากไม่ได้รับการรักษาอย่างเหมาะสม
+            </p>
+
+        </div>
+
+    </section>
+
+    <!-- DATASET OVERVIEW -->
+
+   <section class="section">
+
+<h2>Dataset Overview</h2>
+
+<div class="overview-grid">
+
+    <div class="overview-card">
+
+        <i class="fa-solid fa-database icon-blue icon-large"></i>
+
+        <h3>Total Records</h3>
+
+        <p id="records">...</p>
+
+    </div>
+
+    <div class="overview-card">
+
+        <i class="fa-solid fa-table-columns icon-blue icon-large"></i>
+
+        <h3>Total Features</h3>
+
+        <p id="features">...</p>
+
+    </div>
+
+    <div class="overview-card">
+
+        <i class="fa-solid fa-virus-covid icon-green icon-large"></i>
+
+        <h3>Positive Cases</h3>
+
+        <p id="positive">...</p>
+
+    </div>
+
+    <div class="overview-card">
+
+        <i class="fa-solid fa-shield-virus icon-red icon-large"></i>
+
+        <h3>Negative Cases</h3>
+
+        <p id="negative">...</p>
+
+    </div>
+    </div>
+
+    </section>
+    
+    <!-- DATA PREPARATION -->
+
+    <section class="section">
+
+        <h2>Data Preparation</h2>
+
+        <div class="card">
+
+            <p>
+                ชุดข้อมูลต้นฉบับถูกคัดเลือกเฉพาะตัวแปรที่เกี่ยวข้องกับ
+                การวิเคราะห์การติดเชื้อ Ebola เช่น
+                Body Temperature,
+                Contact With Patient,
+                Visited Outbreak Region,
+                Viral Load Score และอาการต่าง ๆ
+            </p>
+
+            <br>
+
+            <p>
+                ตัวแปรที่ถูกตัดออกเป็นตัวแปรที่มีข้อมูลซ้ำซ้อน
+                หรือไม่ช่วยเพิ่มประสิทธิภาพในการพยากรณ์ของโมเดล
+                เพื่อช่วยลด Noise และทำให้การวิเคราะห์มีประสิทธิภาพมากขึ้น
+            </p>
+
+        </div>
+
+    </section>
+
+    <!-- KPI -->
+<section class="section">
+
+<h2>Model Performance KPI</h2>
+
+<div class="kpi-grid">
+
+    <div class="kpi-card">
+
+        <i class="fa-solid fa-bullseye icon-large"></i>
+
+        <h3>Accuracy</h3>
+
+        <p id="accuracy">...</p>
+
+    </div>
+
+    <div class="kpi-card">
+
+        <i class="fa-solid fa-crosshairs icon-large"></i>
+
+        <h3>Precision</h3>
+
+        <p id="precision">...</p>
+
+    </div>
+
+    <div class="kpi-card">
+
+        <i class="fa-solid fa-magnifying-glass-chart icon-large"></i>
+
+        <h3>Recall</h3>
+
+        <p id="recall">...</p>
+
+    </div>
+
+    <div class="kpi-card">
+
+        <i class="fa-solid fa-award icon-large"></i>
+
+        <h3>F1 Score</h3>
+
+        <p id="f1">...</p>
+
+    </div>
+</div>
+</section>
+
+    <!-- =======================================
+     D3.JS VISUALIZATION
+======================================== -->
+
+<section class="section">
+
+    <h2>
+        <i class="fa-solid fa-diagram-project"></i>
+        D3.js Feature Importance Analysis
+    </h2>
+
+    <div class="card">
+
+        <p>
+            การวิเคราะห์ปัจจัยสำคัญด้วย D3.js
+            โดยสามารถกรองข้อมูลตามประเภทปัจจัยได้
+            และรองรับ Interactive Tooltip, Hover และ Animation
+        </p>
+
+    </div>
+
+    <br>
+
+    <div class="button-group">
+
+        <button onclick="drawFeatureChart('all')">
+            All Factors
+        </button>
+
+        <button onclick="drawFeatureChart('demographic')">
+            Demographic
+        </button>
+
+        <button onclick="drawFeatureChart('symptoms')">
+            Symptoms
+        </button>
+
+        <button onclick="drawFeatureChart('exposure')">
+            Exposure
+        </button>
+
+        <button onclick="drawFeatureChart('lab')">
+            Lab Results
+        </button>
+
+    </div>
+
+    <div id="importanceChart"></div>
+
+</section>
+
+
+<!-- POSITIVE VS NEGATIVE -->
+
+<section class="section">
+
+    <h2>
+        <i class="fa-solid fa-chart-pie"></i>
+        Positive vs Negative Cases
+    </h2>
+
+    <div class="card">
+
+        <p>
+            แสดงสัดส่วนผู้ป่วยที่ถูกจำแนกว่า
+            Positive และ Negative จากชุดข้อมูลทดสอบ
+        </p>
+
+        <div id="pieChart"></div>
+
+    </div>
+
+</section>
+
+
+    <!-- PREDICTION PERFORMANCE -->
+
+<section class="section">
+
+<h2>Model Prediction Performance</h2>
+
+<div id="predictionGrid">
+
+    <div class="prediction-card tp">
+
+        <i class="fa-solid fa-circle-check icon-large"></i>
+
+        <h3>True Positive</h3>
+
+        <p id="tp">0</p>
+
+        <span>
+            ผู้ติดเชื้อที่โมเดลทำนายถูกต้อง
+        </span>
+
+    </div>
+
+    <div class="prediction-card tn">
+
+        <i class="fa-solid fa-shield-halved icon-large"></i>
+
+        <h3>True Negative</h3>
+
+        <p id="tn">0</p>
+
+        <span>
+            ผู้ไม่ติดเชื้อที่โมเดลทำนายถูกต้อง
+        </span>
+
+    </div>
+
+    <div class="prediction-card fp">
+
+        <i class="fa-solid fa-triangle-exclamation icon-large"></i>
+
+        <h3>False Positive</h3>
+
+        <p id="fp">0</p>
+
+        <span>
+            ผู้ไม่ติดเชื้อแต่ถูกทำนายว่าติดเชื้อ
+        </span>
+
+    </div>
+
+    <div class="prediction-card fn">
+
+        <i class="fa-solid fa-circle-xmark icon-large"></i>
+
+        <h3>False Negative</h3>
+
+        <p id="fn">0</p>
+
+        <span>
+            ผู้ติดเชื้อแต่ถูกทำนายว่าไม่ติดเชื้อ
+        </span>
+
+    </div>
+
+</div>
+</section>
+
+    <!-- INSIGHTS -->
+
+<section class="section">
+
+    <h2>Key Insights</h2>
+
+    <div class="overview-grid">
+
+        <div class="overview-card">
+
+            <i class="fa-solid fa-temperature-high icon-red icon-large"></i>
+
+            <h3>Body Temperature</h3>
+
+            <p>
+                ปัจจัยที่มีความสำคัญสูงสุด
+                ในการทำนายการติดเชื้อ Ebola
+            </p>
+
+        </div>
+
+        <div class="overview-card">
+
+            <i class="fa-solid fa-handshake-angle icon-orange icon-large"></i>
+
+            <h3>Contact With Patient</h3>
+
+            <p>
+                การสัมผัสผู้ติดเชื้อ
+                เป็นปัจจัยเสี่ยงหลัก
+            </p>
+
+        </div>
+
+        <div class="overview-card">
+
+            <i class="fa-solid fa-map-location-dot icon-blue icon-large"></i>
+
+            <h3>Outbreak Region</h3>
+
+            <p>
+                การเดินทางไปพื้นที่ระบาด
+                ส่งผลต่อโอกาสการติดเชื้อ
+            </p>
+
+        </div>
+
+        <div class="overview-card">
+
+            <i class="fa-solid fa-brain icon-green icon-large"></i>
+
+            <h3>Machine Learning</h3>
+
+            <p>
+                Random Forest
+                มี Accuracy มากกว่า 98%
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+    <!-- COMPARISON -->
+
+    <section class="section">
+
+        <h2>D3.js vs Chart.js Comparison</h2>
+
+        <table>
+
+            <tr>
+                <th>หัวข้อ</th>
+                <th>Chart.js</th>
+                <th>D3.js</th>
+            </tr>
+
+            <tr>
+                <td>ความง่ายในการใช้งาน</td>
+                <td>สูง</td>
+                <td>ปานกลาง</td>
+            </tr>
+
+            <tr>
+                <td>Customization</td>
+                <td>ปานกลาง</td>
+                <td>สูงมาก</td>
+            </tr>
+
+            <tr>
+                <td>Animation</td>
+                <td>ดี</td>
+                <td>ดีมาก</td>
+            </tr>
+
+            <tr>
+                <td>Interactive</td>
+                <td>ดี</td>
+                <td>ดีมาก</td>
+            </tr>
+
+            <tr>
+                <td>Complex Visualization</td>
+                <td>ปานกลาง</td>
+                <td>สูงมาก</td>
+            </tr>
+
+        </table>
+
+    </section>
+
+    <!-- CONCLUSION -->
+
+    <section class="section">
+
+        <h2>
+    <i class="fa-solid fa-chart-line"></i>
+    Conclusion
+</h2>
+
+        <div class="card">
+
+            <p>
+                จากการวิเคราะห์ข้อมูลผู้ป่วย Ebola พบว่าปัจจัยด้านอาการ
+                และประวัติการสัมผัสผู้ป่วยมีผลต่อการติดเชื้อมากที่สุด
+            </p>
+
+            <br>
+
+            <p>
+                โมเดล Random Forest สามารถพยากรณ์การติดเชื้อได้อย่างมีประสิทธิภาพ
+                โดยมี Accuracy, Precision, Recall และ F1 Score อยู่ในระดับสูง
+            </p>
+
+            <br>
+
+            <p>
+                D3.js เหมาะกับการพัฒนา Dashboard เชิงวิเคราะห์
+                เนื่องจากมีความยืดหยุ่นในการสร้าง Interactive Visualization
+                และรองรับการนำเสนอข้อมูลเชิงลึกได้เป็นอย่างดี
+            </p>
+
+        </div>
+
+    </section>
+
+    <!-- FOOTER -->
+
+    <footer>
+        Ebola Analytics Dashboard | Data Visualization Technology Project
+    </footer>
+
+<script src="script.js"></script>
+
+</body>
+
+</html>
